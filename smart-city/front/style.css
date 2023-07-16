@@ -1,0 +1,74 @@
+.bg-image {
+    height: 100vh;
+    width: 100%;
+    background-image: url(smart-city.jpg);
+    background-size: cover;
+}
+
+.bg-image::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.header-text{
+    position: relative;
+    font-size: 2rem;
+    color: #80128B;
+}
+
+.header-text-sm{
+    position: relative;
+    font-size: 1.5rem;
+    text-align: center;
+    color: #DD58D6;
+}
+
+.fa-city {
+    position: relative;
+    font-size: 2rem;
+    color: #DD58D6;
+}
+
+.form-register {
+    position: relative;
+    color: #DD58D6;
+}
+
+.form-group {
+    width: 50%;
+}
+
+.form-group-item {
+    margin-left: 50%;
+    margin-right: 50%;
+}
+
+.btnSub{
+    margin-left: 25%;
+}
+
+.form-select{
+    margin-left: 50%;
+}
+
+.infoList {
+    position: relative;
+    text-align: center;
+    list-style: none;
+    padding: 0;
+    color: #e4a1d3;
+    font-size: 1.3rem;
+}
+
+.infoList-item{
+    margin-bottom: 10px;
+}
+
+#category {
+    margin-right: 300px;
+}

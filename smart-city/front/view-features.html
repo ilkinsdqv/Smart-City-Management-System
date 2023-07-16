@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="style.css">
+    <title>Smart City Management System</title>
+</head>
+<body onload="loadCities()">
+    <div class="bg-image">
+        <nav class="navbar navbar-expand-sm navbar-dark">
+            <div class="container">
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-main">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbar-main">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="home.html" class="nav-link ps-0">Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="admin-login.html" class="nav-link">Admin Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="user-login.html" class="nav-link">User Login
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+          </nav>
+        <div class="container d-flex justify-content-center align-items-center">
+            <i class="fa-sharp fa-solid fa-city me-3"></i>
+            <h1 class="header-text mt-3">Smart City Management System</h1>
+        </div>
+
+        <div class="container">
+            <h2 class="header-text text-center mt-5">View Features</h2>
+            span
+            <form class="form-register">
+                <div class="form-group row mb-3">
+                    <div class="form-group-item">
+                        <span>Select City</span>
+                    </div>
+                    <select id="cityList" class="form-select mt-2">
+                        
+                    </select>
+                </div>
+                <div class="form-group row mb-3">
+                    <div class="form-group-item">
+                        <span>Select Category</span>
+                    </div>
+                    <select id="gender" class="form-select mt-2">
+                        <option selected>Category</option>
+                        <option value="Job Details">Job Details</option>
+                        <option value="Higher Studies">Higher Studies</option>
+                        <option value="Business">Business</option>
+                        <option value="Tourism">Tourism</option>
+                        <option value="Booking Hotel">Booking Hotel</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Shopping">Shopping</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-outline-light btnSub me-2">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    
+    var cityListElement = document.getElementById("cityList");
+    var token = "Basic " + window.btoa("u:p");
+
+    function loadCities(){
+        var http = new XMLHttpRequest();
+
+        http.onload = function(){
+            var response = this.responseText;
+            var cities = JSON.parse(response);
+
+            fillCityList(cities);
+        }
+        
+        cityListElement.innerHTML = "<option selected>City</option>";
+        http.open("GET", "http://localhost:8081/view-features", true);
+        http.setRequestHeader("Authorization", token);
+        http.send();
+    }
+
+    function fillCityList(cities){
+
+        
+        var cityListHtml = "<option selected>City</option>";
+
+        for (let i = 0; i < cities.length; i++) {
+            const city = cities[i];
+            
+            cityListHtml +=  "<option value='"+ city +"'>" + city + "</option>";
+
+        }
+        cityListElement.innerHTML = cityListHtml;
+    }
+
+</script>
+</html>

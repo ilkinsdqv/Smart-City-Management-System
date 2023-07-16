@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="style.css">
+    <title>Smart City Management System</title>
+</head>
+<body>
+    <div class="bg-image">
+        <nav class="navbar navbar-expand-sm navbar-dark">
+            <div class="container">
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-main">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbar-main">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="home.html" class="nav-link ps-0">Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="admin-login.html" class="nav-link">Admin Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="user-login.html" class="nav-link">User Login
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+          </nav>
+        <div class="container d-flex justify-content-center align-items-center">
+            <i class="fa-sharp fa-solid fa-city me-3"></i>
+            <h1 class="header-text mt-3 mb-3">Smart City Management System</h1>
+        </div>
+        <div class="container">
+            <h2 class="header-text text-center mt-5">User Registration/h2>
+            <form onsubmit="onSaveUser(event)" class="form-register">
+                <div class="form-group row mb-3">
+                    <div class="form-group-item">
+                        <label for="username" class="col-form-label">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Username">
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <div class="form-group-item">
+                        <label for="name" class="col-form-label">Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Name">
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <div class="form-group-item">
+                        <label for="surname" class="col-form-label">Surname</label>
+                        <input type="text" class="form-control" id="surname" placeholder="Surname">
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <div class="form-group-item">
+                        <label for="email" class="col-form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter email">
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <div class="form-group-item">
+                        <label for="password" class="col-form-label">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password">
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <div class="form-group-item">
+                        <label for="phoneNum" class="col-form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="phoneNum" placeholder="Phone Number">
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <div class="form-group-item">
+                        <label for="location" class="col-form-label">Location</label>
+                        <input type="text" class="form-control" id="location" placeholder="Location">
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <div class="form-group-item">
+                        <span>Gender</span>
+                    </div>
+                    <select id="gender" class="form-select mt-2">
+                        <option selected>Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-outline-light btnSub me-2">Register</button>
+                <button type="reset" class="btn btn-outline-light btnReset me-auto">Reset</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        var token = "Basic " + window.btoa("u:p");
+
+        function onSaveUser(event){
+            event.preventDefault();
+            var username = document.getElementById('username').value;
+            var name = document.getElementById('name').value;
+            var surname = document.getElementById('surname').value;
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            var phoneNum = document.getElementById('phoneNum').value;
+            var location = document.getElementById('location').value;
+            var gender = document.getElementById('gender').value;
+
+            var userObject = {};
+            userObject.username = username;
+            userObject.name = name;
+            userObject.surname = surname;
+            userObject.email = email;
+            userObject.password = password;
+            userObject.phoneNum = phoneNum;
+            userObject.location = location;
+            userObject.gender = gender;
+
+            var http = new XMLHttpRequest();
+
+            http.open("POST", "http://localhost:8081/user-registration", true);
+            http.setRequestHeader("Content-Type", "application/json");
+            http.setRequestHeader("Authorization", token);
+            http.send(JSON.stringify(userObject));
+        }
+    </script>
+
+</body>
+
+
+</html>
