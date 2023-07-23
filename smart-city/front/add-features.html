@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <title>Smart City Management System</title>
 </head>
-<body>
+<body onload="editFeature()">
     <div class="bg-image">
         <nav class="navbar navbar-expand-sm navbar-dark">
             <div class="container">
@@ -40,7 +40,7 @@
             <h1 class="header-text mt-3">Smart City Management System</h1>
         </div>
         <div class="container">
-            <h2 class="header-text text-center mt-5">Add Features</h2>
+            <h2 id="header-text-add-edit" class="header-text text-center mt-5"></h2>
             <form onsubmit="onSaveFeature(event)" class="form-register">
                 <div class="form-group row mb-3">
                     <div class="form-group-item">
@@ -97,6 +97,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    var selectedFeatureId = 0;
     var token = "Basic " + window.btoa("u:p");
     function onSaveFeature(event){
         event.preventDefault();
@@ -111,6 +112,7 @@
 
         var featureObject = {};
         
+        featureObject.id = selectedFeatureId;
         featureObject.name = name;
         featureObject.category = category;
         featureObject.description = description;
@@ -118,14 +120,52 @@
         featureObject.contact = contact;
         featureObject.city = city;
 
-        alert(city);
 
         var http = new XMLHttpRequest();
+
+        http.onload = function (){
+            selectedFeatureId = 0;
+            setHeaderText("Add Features");
+        }
 
         http.open("POST", "http://localhost:8081/add-features", true);
         http.setRequestHeader("Content-Type", "application/json");
         http.setRequestHeader("Authorization", token);
         http.send(JSON.stringify(featureObject));
     }
+
+    
+    function editFeature(){
+        if(localStorage.getItem("selectedFeatureId")>0){
+            setHeaderText("Edit Feature");
+            selectedFeatureId = localStorage.getItem("selectedFeatureId");
+        
+            var http = new XMLHttpRequest();
+
+            http.onload = function(){
+                var response = this.responseText;
+                var featureObject = JSON.parse(response);
+                document.getElementById('name').value = featureObject.name;
+                document.getElementById('category').value = featureObject.category;
+                document.getElementById('description').value = featureObject.description;
+                document.getElementById('address').value = featureObject.address;
+                document.getElementById('contact').value = featureObject.contact;
+                document.getElementById('city').value = featureObject.city;
+            }
+                
+            http.open("GET", "http://localhost:8081/view-features-admin/"+selectedFeatureId, true);
+            http.setRequestHeader("Authorization", token);
+            http.send();
+            localStorage.setItem("id", 0);
+        }   
+    }
+
+    function setHeaderText(text){
+        document.getElementById("header-text-add-edit").innerHTML = text;
+    }
+
+    setHeaderText("Add Features");
+
+    
 </script>
 </html>

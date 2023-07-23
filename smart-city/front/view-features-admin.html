@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="style.css">
+    <title>Smart City Management System</title>
+</head>
+<body onload="loadFeatures()">
+    <div class="bg-image">
+        <nav class="navbar navbar-expand-sm navbar-dark">
+            <div class="container">
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-main">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbar-main">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="home.html" class="nav-link ps-0">Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="admin-login.html" class="nav-link">Admin Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="user-login.html" class="nav-link">User Login
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+          </nav>
+        <div class="container d-flex justify-content-center align-items-center">
+            <i class="fa-sharp fa-solid fa-city me-3"></i>
+            <h1 class="header-text mt-3">Smart City Management System</h1>
+        </div>
+
+        <div class="container">
+            <h2 class="header-text text-center mt-5">View Features</h2>
+            <div class="container mt-4">
+                <table class="table table-dark table-hover table_view-features">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Address</th>
+                            <th>Contact</th>
+                            <th>City</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="features-tbody">
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    
+    var featuresTbodyElement = document.getElementById("features-tbody");
+    var token = "Basic " + window.btoa("u:p");
+
+    function loadFeatures(){
+        var http = new XMLHttpRequest();
+
+        http.onload = function(){
+            var response = this.responseText;
+            var featuresArray = JSON.parse(response);
+
+            fillFeaturesTable(featuresArray);
+        }
+        
+        http.open("GET", "http://localhost:8081/view-features-admin", true);
+        http.setRequestHeader("Authorization", token);
+        http.send();
+    }
+
+    function fillFeaturesTable(features){
+        
+        var featureTbodyHtml = "";
+
+        for (var i = 0; i < features.length; i++) {
+            var feature = features[i];
+            
+            featureTbodyHtml+="<tr><td>"+feature.id+"</td>";
+            featureTbodyHtml+="<td>"+feature.name+"</td>";
+            featureTbodyHtml+="<td>"+feature.category+"</td>";
+            featureTbodyHtml+="<td>"+feature.description+"</td>";
+            featureTbodyHtml+="<td>"+feature.address+"</td>";
+            featureTbodyHtml+="<td>"+feature.contact+"</td>";
+            featureTbodyHtml+="<td>"+feature.city+"</td>";
+            featureTbodyHtml+="<td><button class='btn btn-danger' onclick='onDeleteFeature("+feature.id+")'>Delete</button>";
+            featureTbodyHtml+="<a href='/add-features.html' target='blank' class='btn btn-warning ms-1' onclick='onEditFeature("+feature.id+")'>Update</a></td></tr>";
+
+        }
+        featuresTbodyElement.innerHTML = featureTbodyHtml;
+    }
+
+    function onDeleteFeature(featureId){
+        if(confirm("Do you want delete this feature?")){
+            var http = new XMLHttpRequest();
+
+            http.onload = function(){
+                loadFeatures();
+            }
+            
+            http.open("DELETE", "http://localhost:8081/view-features-admin/"+featureId, true);
+            http.setRequestHeader("Authorization", token);
+            http.send();
+        }
+    }
+
+    function onEditFeature(featureId){
+        localStorage.setItem("selectedFeatureId",featureId);
+    }
+
+</script>
+</html>
