@@ -46,6 +46,7 @@
                     <div class="form-group-item">
                         <label for="name" class="col-form-label">Name</label>
                         <input type="text" class="form-control" id="name" placeholder="Name">
+                        <div id="name-error" class="error"></div>
                     </div>
                 </div>
                 <div class="form-group row mb-3">
@@ -67,24 +68,28 @@
                     <div class="form-group-item">
                         <label for="description" class="col-form-label">Description</label>
                         <textarea name="description" id="description" class="form-control" cols="40" rows=""></textarea>
+                        <div id="description-error" class="error"></div>
                     </div>
                 </div>
                 <div class="form-group row mb-3">
                     <div class="form-group-item">
                         <label for="address" class="col-form-label">Address</label>
                         <input type="text" class="form-control" id="address" placeholder="Address">
+                        <div id="address-error" class="error"></div>
                     </div>
                 </div>
                 <div class="form-group row mb-3">
                     <div class="form-group-item">
                         <label for="contact" class="col-form-label">Contact</label>
                         <input type="text" class="form-control" id="contact" placeholder="Contact">
+                        <div id="contact-error" class="error"></div>
                     </div>
                 </div>
                 <div class="form-group row mb-3">
                     <div class="form-group-item">
                         <label for="city" class="col-form-label">City</label>
                         <input type="text" class="form-control" id="city" placeholder="City">
+                        <div id="city-error" class="error"></div>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-outline-light btnSub me-2">Submit</button>
@@ -124,8 +129,47 @@
         var http = new XMLHttpRequest();
 
         http.onload = function (){
-            selectedFeatureId = 0;
-            setHeaderText("Add Features");
+
+            var nameError = "";
+            var descriptionError = "";
+            var addressError = "";
+            var contactError = "";
+            var cityError = "";
+
+            if(this.status==400){
+                var errorObject = JSON.parse(this.responseText);
+                errorObject.validations.forEach(error => {
+                    if(error.field=="name"){
+                        nameError+=error.message+"<br>";
+                    }
+
+                    if(error.field=="description"){
+                        descriptionError+=error.message+"<br>";
+                    }
+
+                    if(error.field=="address"){
+                        addressError+=error.message+"<br>";
+                    }
+
+                    if(error.field=="contact"){
+                        contactError+=error.message+"<br>";
+                    }
+
+                    if(error.field=="city"){
+                        cityError+=error.message+"<br>";
+                    }
+                });
+                document.getElementById('name-error').innerHTML = nameError;
+                document.getElementById('description-error').innerHTML = descriptionError;
+                document.getElementById('address-error').innerHTML = addressError;
+                document.getElementById('contact-error').innerHTML = contactError;
+                document.getElementById('city-error').innerHTML = cityError;
+            }else{
+                clearErrorMessages();
+
+                selectedFeatureId = 0;
+                setHeaderText("Add Features");
+            } 
         }
 
         http.open("POST", "http://localhost:8081/add-features", true);
@@ -156,7 +200,7 @@
             http.open("GET", "http://localhost:8081/view-features-admin/"+selectedFeatureId, true);
             http.setRequestHeader("Authorization", token);
             http.send();
-            localStorage.setItem("id", 0);
+            localStorage.setItem("selectedFeatureId", 0);
         }   
     }
 
@@ -166,6 +210,14 @@
 
     setHeaderText("Add Features");
 
+
+    function clearErrorMessages(){
+        document.getElementById('name-error').innerHTML = "";
+        document.getElementById('description-error').innerHTML = "";
+        document.getElementById('address-error').innerHTML = "";
+        document.getElementById('contact-error').innerHTML = "";
+        document.getElementById('city-error').innerHTML = "";
+    }
     
 </script>
 </html>

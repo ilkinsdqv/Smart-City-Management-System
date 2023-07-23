@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <title>Smart City Management System</title>
 </head>
-<body onload="loadCities()">
+<body onload="sendCityAndCategory()">
     <div class="bg-image">
         <nav class="navbar navbar-expand-sm navbar-dark">
             <div class="container">
@@ -42,34 +42,27 @@
 
         <div class="container">
             <h2 class="header-text text-center mt-5">View Features</h2>
-            span
-            <form class="form-register">
-                <div class="form-group row mb-3">
-                    <div class="form-group-item">
-                        <span>Select City</span>
-                    </div>
-                    <select id="cityList" class="form-select mt-2">
+            <div class="container mt-4">
+                <table class="table table-dark table-hover table_view-features">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Address</th>
+                            <th>Contact</th>
+                            <th>City</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="features-tbody">
                         
-                    </select>
-                </div>
-                <div class="form-group row mb-3">
-                    <div class="form-group-item">
-                        <span>Select Category</span>
-                    </div>
-                    <select id="gender" class="form-select mt-2">
-                        <option selected>Category</option>
-                        <option value="Job Details">Job Details</option>
-                        <option value="Higher Studies">Higher Studies</option>
-                        <option value="Business">Business</option>
-                        <option value="Tourism">Tourism</option>
-                        <option value="Booking Hotel">Booking Hotel</option>
-                        <option value="Transportation">Transportation</option>
-                        <option value="Shopping">Shopping</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-outline-light btnSub me-2">Submit</button>
-            </form>
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <br style="margin-bottom: 500px;">
     </div>
 </body>
 
@@ -77,37 +70,61 @@
 
 <script>
     
-    var cityListElement = document.getElementById("cityList");
+    var featuresTbodyElement = document.getElementById("features-tbody");
     var token = "Basic " + window.btoa("u:p");
 
-    function loadCities(){
+    function loadFeatures(){
         var http = new XMLHttpRequest();
 
         http.onload = function(){
             var response = this.responseText;
-            var cities = JSON.parse(response);
+            var featuresArray = JSON.parse(response);
 
-            fillCityList(cities);
+            fillFeaturesTable(featuresArray);
         }
         
-        cityListElement.innerHTML = "<option selected>City</option>";
         http.open("GET", "http://localhost:8081/view-features", true);
         http.setRequestHeader("Authorization", token);
         http.send();
     }
 
-    function fillCityList(cities){
-
+    function fillFeaturesTable(features){
         
-        var cityListHtml = "<option selected>City</option>";
+        var featureTbodyHtml = "";
 
-        for (let i = 0; i < cities.length; i++) {
-            const city = cities[i];
+        for (var i = 0; i < features.length; i++) {
+            var feature = features[i];
             
-            cityListHtml +=  "<option value='"+ city +"'>" + city + "</option>";
-
+            featureTbodyHtml+="<tr><td>"+feature.id+"</td>";
+            featureTbodyHtml+="<td>"+feature.name+"</td>";
+            featureTbodyHtml+="<td>"+feature.category+"</td>";
+            featureTbodyHtml+="<td>"+feature.description+"</td>";
+            featureTbodyHtml+="<td>"+feature.address+"</td>";
+            featureTbodyHtml+="<td>"+feature.contact+"</td>";
+            featureTbodyHtml+="<td>"+feature.city+"</td></tr>";
         }
-        cityListElement.innerHTML = cityListHtml;
+        featuresTbodyElement.innerHTML = featureTbodyHtml;
+    }
+
+    function sendCityAndCategory(){
+        event.preventDefault();
+
+        var city = localStorage.getItem("city");
+        var category = localStorage.getItem("category");
+
+        cityCategoryObj = {};
+        cityCategoryObj.city = city;
+        cityCategoryObj.category = category;
+
+
+        var http = new XMLHttpRequest();
+
+        http.open("POST", "http://localhost:8081/view-features", true);
+        http.setRequestHeader("Content-Type", "application/json");
+        http.setRequestHeader("Authorization", token);
+        http.send(JSON.stringify(cityCategoryObj));
+
+        loadFeatures();
     }
 
 </script>

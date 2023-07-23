@@ -4,24 +4,45 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Feature {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer Id;
+	private Integer id;
+	
+	@NotEmpty(message="Name can not be empty.")
+	@Size(min=2,message="Name must contain minimum 2 letters")
+	@Size(max=30,message="Name must contain maximum 30 letters")
 	private String name;
 	private String category;
+	
+	@NotEmpty(message="Description can not be empty.")
+	@Size(min=2,message="Description must contain minimum 2 letters")
+	@Size(max=30,message="Description must contain maximum 30 letters")
 	private String description;
+	
+	@NotEmpty(message="Address can not be empty.")
+	@Size(min=2,message="Address must contain minimum 2 letters")
+	@Size(max=30,message="Address must contain maximum 30 letters")
 	private String address;
+	
+	@NotEmpty(message="Phone number can not be empty.")
+	@Size(max=30,message="Phone number is too long")
 	private String contact;
+	
+	@NotEmpty(message="City can not be empty.")
+	@Size(min=2,message="City must contain minimum 2 letters")
+	@Size(max=30,message="City must contain maximum 30 letters")
 	private String city;
 	public Integer getId() {
-		return Id;
+		return id;
 	}
 	public void setId(Integer id) {
-		Id = id;
+		this.id = id;
 	}
 	public String getName() {
 		return name;
@@ -59,6 +80,20 @@ public class Feature {
 	public void setCity(String city) {
 		this.city = city;
 	}
+	public Feature(Integer id,String name,String category,String description,String address,String contact,String city) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.category = category;
+		this.description = description;
+		this.address = address;
+		this.contact = contact;
+		this.city = city;
+	}
+	
+	public Feature() {}
+	
+	
 	
 	
 	

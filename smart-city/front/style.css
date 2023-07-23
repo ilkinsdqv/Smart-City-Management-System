@@ -1,5 +1,6 @@
 .bg-image {
-    height: 100vh;
+    height: 2000px;
+    position: relative;
     width: 100%;
     background-image: url(smart-city.jpg);
     background-size: cover;
@@ -50,6 +51,11 @@
 
 .btnSub{
     margin-left: 25%;
+    margin-bottom: 500px;
+}
+
+.btnReset{
+    margin-bottom: 500px;
 }
 
 .form-select{
@@ -75,4 +81,9 @@
 
 .table_view-features {
     position: relative;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
 }

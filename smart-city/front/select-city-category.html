@@ -56,7 +56,7 @@
                     <div class="form-group-item">
                         <span>Select Category</span>
                     </div>
-                    <select id="gender" class="form-select mt-2">
+                    <select id="category" class="form-select mt-2">
                         <option selected>Category</option>
                         <option value="Job Details">Job Details</option>
                         <option value="Higher Studies">Higher Studies</option>
@@ -67,7 +67,7 @@
                         <option value="Shopping">Shopping</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-outline-light btnSub me-2">Submit</button>
+                <button onclick="onSubmitCity()" type="button" class="btn btn-outline-light btnSub me-2">Submit</button>
             </form>
         </div>
     </div>
@@ -97,7 +97,6 @@
     }
 
     function fillCityList(cities){
-
         
         var cityListHtml = "<option selected>City</option>";
 
@@ -109,6 +108,20 @@
         }
         cityListElement.innerHTML = cityListHtml;
     }
+
+    function onSubmitCity(){
+        var city = document.getElementById('cityList').value;
+        var category = document.getElementById('category').value;
+
+        if(city == 'City' || category == 'category'){
+            alert("Select City and Category")
+        }else{
+            localStorage.setItem('city', city);
+            localStorage.setItem('category', category);
+            window.location.replace("/view-features.html");
+        }
+    }
+
 
 </script>
 </html>
