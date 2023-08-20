@@ -51,7 +51,9 @@
 
 <script>
 
-    var token = "Basic " + window.btoa("u:p");
+    var username = localStorage.getItem('username');
+    var password = localStorage.getItem('password');
+    var token = "Basic " + window.btoa(username+":"+password);
 
     function loadUser(){
         var http = new XMLHttpRequest();

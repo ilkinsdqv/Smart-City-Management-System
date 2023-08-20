@@ -6,7 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <link rel="stylesheet" href="style.css">
-    <title>Smart City Management System</title>
+    <title>Login</title>
 </head>
 <body>
     <div class="bg-image">
@@ -22,12 +22,9 @@
                             <a href="home.html" class="nav-link ps-0">Home
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="admin-login.html" class="nav-link">Admin Login
-                            </a>
                         </li>
                         <li class="nav-item">
-                            <a href="user-login.html" class="nav-link">User Login
+                            <a href="user-login.html" class="nav-link">Login
                             </a>
                         </li>
                     </ul>
@@ -39,8 +36,51 @@
             <i class="fa-sharp fa-solid fa-city me-3"></i>
             <h1 class="header-text mt-3">Smart City Management System</h1>
         </div>
+        <div class="container">
+            <h2 class="header-text text-center mt-5">Login</h2>
+            <form onsubmit="onLogin(event)" class="form-register">
+                <div class="form-group row mb-3">
+                    <div class="form-group-item">
+                        <label for="username" class="col-form-label">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Username">
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <div class="form-group-item">
+                        <label for="password" class="col-form-label">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-outline-light btnSub me-2">Login</button>
+                <a class="btn btn-outline-light btnReset" href="user-registration.html">Create Account</a>
+            </form>
+        </div>
     </div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    var usernameInput = document.getElementById('username');
+    var passwordInput = document.getElementById('password');
+
+    function onLogin(event){
+        event.preventDefault();
+        var username = usernameInput.value;
+        var password = passwordInput.value;
+
+        var http = new XMLHttpRequest();
+        http.onload=function(){
+            if(this.status==200){
+                localStorage.setItem('username', username);
+                localStorage.setItem('password', password);
+                window.location.href="home.html";
+            }else{
+                alert("Wrong username or password.");
+            }
+        }
+        http.open("GET","http://localhost:8081/login",true);
+        http.setRequestHeader("Authorization", "Basic " + window.btoa(username+":"+password));
+        http.send();
+    }
+</script>
 </html>

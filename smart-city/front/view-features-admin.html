@@ -70,7 +70,9 @@
 <script>
     
     var featuresTbodyElement = document.getElementById("features-tbody");
-    var token = "Basic " + window.btoa("u:p");
+    var username = localStorage.getItem('username');
+    var password = localStorage.getItem('password');
+    var token = "Basic " + window.btoa(username+":"+password);
 
     function loadFeatures(){
         var http = new XMLHttpRequest();

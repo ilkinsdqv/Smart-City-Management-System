@@ -103,7 +103,9 @@
 
 <script>
     var selectedFeatureId = 0;
-    var token = "Basic " + window.btoa("u:p");
+    var username = localStorage.getItem('username');
+    var password = localStorage.getItem('password');
+    var token = "Basic " + window.btoa(username+":"+password);
     function onSaveFeature(event){
         event.preventDefault();
         var name = document.getElementById('name').value;
